@@ -152,140 +152,106 @@ A well-structured model helps Power BI apply filters consistently and reduces th
 
 Relationship direction, cardinality, key uniqueness, and filter propagation are important to the accuracy of cross-table analysis. Measures that combine fields from different tables should be validated to ensure that the model returns the intended results.
 
+
 ## 7. DAX Measures
 
-DAX measures provide reusable calculations for evaluating production, costs, maintenance, sales, and supplier performance.
+DAX measures calculate dynamic manufacturing and supply chain KPIs in Power BI.
 
-The following examples illustrate the principal calculations used in the project. They should match the final measures in the Power BI model.
+* **Total Planned Quantity (DAX):** Aggregates planned production quantity from the production logs.
+  ```dax
+  Total Planned Quantity =
+  SUM(Production_Logs[planned_qty])
+  ```
 
-### Production Performance
+* **Total Actual Quantity (DAX):** Calculates the total quantity actually produced.
+  ```dax
+  Total Actual Quantity =
+  SUM(Production_Logs[actual_qty])
+  ```
 
-**Total Planned Quantity**
+* **Production Gap (DAX):** Measures the difference between actual and planned production.
+  ```dax
+  Production Gap =
+  [Total Actual Quantity] - [Total Planned Quantity]
+  ```
 
-```dax
-Total Planned Quantity =
-SUM(Production_Logs[planned_qty])
-```
+* **Production Achievement % (DAX):** Calculates actual output as a proportion of planned output.
+  ```dax
+  Production Achievement % =
+  DIVIDE(
+      [Total Actual Quantity],
+      [Total Planned Quantity],
+      0
+  )
+  ```
 
-**Total Actual Quantity**
+* **Total Scrap Quantity (DAX):** Aggregates recorded scrap quantity.
+  ```dax
+  Total Scrap Quantity =
+  SUM(Production_Logs[scrap_qty])
+  ```
 
-```dax
-Total Actual Quantity =
-SUM(Production_Logs[actual_qty])
-```
+* **Scrap Rate % (DAX):** Calculates scrap quantity relative to actual production.
+  ```dax
+  Scrap Rate % =
+  DIVIDE(
+      [Total Scrap Quantity],
+      [Total Actual Quantity],
+      0
+  )
+  ```
 
-**Production Gap**
+* **Total Material Cost (DAX):** Aggregates recorded material expenditure.
+  ```dax
+  Total Material Cost =
+  SUM(Production_Logs[material_cost])
+  ```
 
-```dax
-Production Gap =
-[Total Actual Quantity] - [Total Planned Quantity]
-```
+* **Total Labour Cost (DAX):** Aggregates recorded labour expenditure.
+  ```dax
+  Total Labour Cost =
+  SUM(Production_Logs[labor_cost])
+  ```
 
-**Production Achievement %**
+* **Total Maintenance Cost (DAX):** Aggregates recorded maintenance expenditure.
+  ```dax
+  Total Maintenance Cost =
+  SUM(Maintenance_Logs[maintenance_cost])
+  ```
 
-```dax
-Production Achievement % =
-DIVIDE(
-    [Total Actual Quantity],
-    [Total Planned Quantity],
-    0
-)
-```
+* **Total Downtime (DAX):** Calculates accumulated machine downtime in hours.
+  ```dax
+  Total Downtime =
+  SUM(Maintenance_Logs[downtime_hours])
+  ```
 
-Format `Production Achievement %` as a percentage in Power BI.
+* **Total Order Value (DAX):** Calculates order value from ordered quantity and unit price.
+  ```dax
+  Total Order Value =
+  SUMX(
+      Sales_Orders,
+      Sales_Orders[ordered_qty] *
+      Sales_Orders[unit_price]
+  )
+  ```
 
-### Quality and Material Waste
+* **Total Quantity Delivered (DAX):** Aggregates recorded delivered quantities.
+  ```dax
+  Total Quantity Delivered =
+  SUM(Sales_Orders[delivered_qty])
+  ```
 
-**Total Scrap Quantity**
+* **Average Supplier Lead Time (DAX):** Calculates average supplier lead time in days.
+  ```dax
+  Average Supplier Lead Time =
+  AVERAGE(Suppliers[avg_lead_time_days])
+  ```
 
-```dax
-Total Scrap Quantity =
-SUM(Production_Logs[scrap_qty])
-```
-
-**Scrap Rate %**
-
-```dax
-Scrap Rate % =
-DIVIDE(
-    [Total Scrap Quantity],
-    [Total Actual Quantity],
-    0
-)
-```
-
-Format `Scrap Rate %` as a percentage.
-
-### Manufacturing Costs
-
-**Total Material Cost**
-
-```dax
-Total Material Cost =
-SUM(Production_Logs[material_cost])
-```
-
-**Total Labour Cost**
-
-```dax
-Total Labour Cost =
-SUM(Production_Logs[labor_cost])
-```
-
-### Machine Reliability and Maintenance
-
-**Total Maintenance Cost**
-
-```dax
-Total Maintenance Cost =
-SUM(Maintenance_Logs[maintenance_cost])
-```
-
-**Total Downtime**
-
-```dax
-Total Downtime =
-SUM(Maintenance_Logs[downtime_hours])
-```
-
-### Customer Fulfilment and Order Value
-
-**Total Order Value**
-
-```dax
-Total Order Value =
-SUMX(
-    Sales_Orders,
-    Sales_Orders[ordered_qty] * Sales_Orders[unit_price]
-)
-```
-
-**Total Quantity Delivered**
-
-```dax
-Total Quantity Delivered =
-SUM(Sales_Orders[delivered_qty])
-```
-
-Total Order Value represents the value of ordered quantities at the recorded unit prices. It should not be interpreted as revenue actually collected or as profit without additional supporting data.
-
-### Supplier Performance
-
-**Average Supplier Lead Time**
-
-```dax
-Average Supplier Lead Time =
-AVERAGE(Suppliers[avg_lead_time_days])
-```
-
-**Average Supplier Defect Rate**
-
-```dax
-Average Supplier Defect Rate =
-AVERAGE(Suppliers[defect_rate])
-```
-
-The supplier defect-rate calculation assumes that the source field is numeric and consistently represented. Its aggregation and percentage formatting should reflect the field's actual definition and scale.
+* **Average Supplier Defect Rate (DAX):** Calculates the average recorded supplier defect rate.
+  ```dax
+  Average Supplier Defect Rate =
+  AVERAGE(Suppliers[defect_rate])
+  ```
 
 ## 8. Exploratory Data Analysis
 

@@ -20,7 +20,7 @@ Nine dirty operational tables cleaned, modeled and turned into a two-page Power 
 5. [Feature Engineering](#5-feature-engineering)
 6. [Data Modeling and Relational Schema](#6-data-modeling-and-relational-schema)
 7. [DAX Measures](#7-dax-measures)
-8. [Core Business Analysis](#8-core-business-analysis)
+8. [Business Objective](#8-business-objective)
 9. [Data Visualization and Interpretation](#9-data-visualization-and-interpretation)
 10. [Validation and Quality Assurance](#10-validation-and-quality-assurance)
 11. [Key Findings and Insights](#11-key-findings-and-insights)
@@ -209,7 +209,7 @@ Average Supplier Defect Rate = AVERAGE(Suppliers[defect_rate])
 
 Format `Production Achievement %` and `Scrap Rate %` as percentages. `DIVIDE` with a default of 0 prevents divide-by-zero errors. `Total Order Value` is ordered quantity at unit price, not revenue collected or profit.
 
-## 8. Core Business Analysis
+## 8. Business Objective
 
 | # | Objective | Key question | Measures |
 |---|---|---|---|
@@ -236,8 +236,8 @@ Interpretation rules applied:
 | Production efficiency | Line and clustered column | Planned vs actual by plant and shift |
 | Cost and material waste | Stacked column | Material and labour cost by shift, with scrap rate |
 | Machine reliability | Clustered bar | Downtime and maintenance cost by machine |
-| Customer fulfilment | Line and clustered column | Ordered, delivered and order value over time |
-| Supplier performance | Line and clustered column | Lead time and defect rate by supplier |
+| Customer fulfilment | 100% Stacked column chart | Ordered, delivered and order value over time |
+| Supplier performance | 100% Stacked column chart | Lead time and defect rate by supplier |
 
 Axis scales, percentage formats, titles and tooltips are set explicitly because measures use different units.
 

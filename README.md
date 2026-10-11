@@ -1,10 +1,18 @@
+# Manufacturing Operations and Supply Chain Performance Analytics
 
-# Manufacturing Operations & Supply Chain Performance Analytics
+**Power BI | Power Query M | DAX | Production, cost, maintenance, fulfilment and supplier analytics**
 
-### A Multi-Table Data Analytics Project for Production Efficiency, Cost Optimization, Machine Reliability, Customer Fulfilment, and Supplier Performance
+Nine dirty operational tables cleaned, modeled and turned into a two-page Power BI report with 14 reusable DAX measures across five business objectives.
+
+| | |
+|---|---|
+| **Tools** | Power BI Desktop, Power Query (M), DAX |
+| **Data** | `Manufacturing_Highly_Dirty_Multi_Table_Dataset.xlsx`, 9 related tables |
+| **Deliverable** | 2-page interactive report, 10 executive KPI cards, 14 DAX measures |
+
+---
 
 ## Table of Contents
-
 1. [Project Overview](#1-project-overview)
 2. [Dataset Overview](#2-dataset-overview)
 3. [Data Quality Assessment](#3-data-quality-assessment)
@@ -12,504 +20,256 @@
 5. [Feature Engineering](#5-feature-engineering)
 6. [Data Modeling and Relational Schema](#6-data-modeling-and-relational-schema)
 7. [DAX Measures](#7-dax-measures)
-8. [Exploratory Data Analysis](#8-exploratory-data-analysis)
-9. [Core Business Analysis](#9-core-business-analysis)
-   - [Production Efficiency and Output Performance](#91-production-efficiency-and-output-performance)
-   - [Manufacturing Cost Optimization and Material Waste](#92-manufacturing-cost-optimization-and-material-waste)
-   - [Machine Reliability and Maintenance Performance](#93-machine-reliability-and-maintenance-performance)
-   - [Customer Fulfilment and Order Value](#94-customer-fulfilment-and-order-value)
-   - [Supplier Performance and Sourcing Optimization](#95-supplier-performance-and-sourcing-optimization)
-10. [Data Visualization and Interpretation](#10-data-visualization-and-interpretation)
-11. [Validation and Quality Assurance](#11-validation-and-quality-assurance)
-12. [Key Findings and Insights](#12-key-findings-and-insights)
-13. [Business Recommendations](#13-business-recommendations)
-14. [Conclusion](#14-conclusion)
+8. [Core Business Analysis](#8-core-business-analysis)
+9. [Data Visualization and Interpretation](#9-data-visualization-and-interpretation)
+10. [Validation and Quality Assurance](#10-validation-and-quality-assurance)
+11. [Key Findings and Insights](#11-key-findings-and-insights)
+12. [Business Recommendations](#12-business-recommendations)
+13. [Conclusion](#13-conclusion)
 
 ---
 
 ## 1. Project Overview
+Decisions on output, cost, downtime, orders and suppliers need one trusted view. This project cleans nine related tables, models them in Power BI and answers five objectives:
 
-Manufacturing businesses need reliable information about production output, operating costs, equipment downtime, customer orders, and supplier performance to make effective operational decisions.
-
-This project uses **Microsoft Power BI** to analyse manufacturing and supply chain operations across nine related tables. The objective is to organise operational data into a structured analytical model, develop business-focused DAX measures, and present performance indicators through interactive dashboards.
-
-The analysis is organised around five business objectives:
-
-1. Production efficiency and output performance.
-2. Manufacturing cost optimization and material waste.
-3. Machine reliability and maintenance performance.
-4. Customer fulfilment and order value.
-5. Supplier performance and sourcing optimization.
-
-The project demonstrates practical application of Power Query, relational data modeling, DAX calculations, and interactive data visualization to support evidence-based operational decision-making.
-
-### Tools and Technologies
-
-- Microsoft Power BI Desktop
-- Power Query
-- DAX (Data Analysis Expressions)
-- Data modeling and table relationships
-- Interactive reports, KPI cards, charts, and tooltips
+| # | Objective |
+|---|---|
+| 1 | Production efficiency and output performance |
+| 2 | Manufacturing cost optimization and material waste |
+| 3 | Machine reliability and maintenance performance |
+| 4 | Customer fulfilment and order value |
+| 5 | Supplier performance and sourcing optimization |
 
 ## 2. Dataset Overview
 
-The project uses the `Manufacturing_Highly_Dirty_Multi_Table_Dataset.xlsx` dataset, which contains nine related tables representing manufacturing, inventory-related material usage, maintenance, sales, customer, employee, machine, product, and supplier information.
-
-| Table | Purpose |
+| Table | Contents |
 |---|---|
-| `Customers` | Customer information for analysing sales and fulfilment. |
-| `Suppliers` | Supplier details, material categories, lead times, grades, and defect rates. |
-| `Products` | Product attributes, standard material costs, and standard selling prices. |
-| `Employees` | Employee information associated with operational activities. |
-| `Machines` | Machine information for equipment and operational analysis. |
-| `Production_Orders` | Production order dates, products, plants, shifts, planned quantities, targets, due dates, and statuses. |
-| `Production_Logs` | Planned and actual output, scrap, downtime, cycle time, material usage, material costs, labour costs, and quality results. |
-| `Sales_Orders` | Customer orders, products, quantities, unit prices, requested delivery dates, actual delivery dates, delivered quantities, and order statuses. |
-| `Maintenance_Logs` | Maintenance dates, machine references, maintenance types, failure reasons, downtime, costs, technicians, and statuses. |
-
-The tables provide complementary perspectives on operational performance. Their relationships enable analysis across production, maintenance, sales, customers, products, employees, machines, and suppliers where the data model supports the required filter paths.
+| `Customers` | Customer details for sales and fulfilment |
+| `Suppliers` | Material category, lead time, grade, defect rate |
+| `Products` | Attributes, standard material cost, standard price |
+| `Employees` | Employees linked to operations |
+| `Machines` | Equipment information |
+| `Production_Orders` | Dates, plant, shift, planned quantity, due date, status |
+| `Production_Logs` | Planned and actual output, scrap, downtime, material and labour cost |
+| `Sales_Orders` | Ordered and delivered quantity, unit price, delivery dates, status |
+| `Maintenance_Logs` | Machine, maintenance type, failure reason, downtime, cost, status |
 
 ## 3. Data Quality Assessment
 
-Before developing the report, the dataset was assessed for data quality issues that could affect calculations, relationships, and visual interpretation.
+| Check | Risk if unresolved |
+|---|---|
+| Missing and incomplete values | Understated totals |
+| Inconsistent labels and statuses | Split categories in visuals |
+| Wrong data types, text inside numeric columns | Failed aggregations |
+| Duplicate records and identifier mismatches | Broken relationships |
+| Inconsistent date formats | Faulty time-series grouping |
+| Referential integrity across tables | Incomplete cross-table analysis |
 
-The assessment focused on:
+## 4. Data Cleaning and Error Correction
 
-- Missing and incomplete values.
-- Inconsistent categorical labels and status values.
-- Incorrect or inconsistent data types.
-- Numeric columns containing text values.
-- Potential duplicate records and identifier consistency.
-- Date fields requiring consistent date formats.
-- Referential integrity between related tables.
-- Values that could produce calculation or aggregation errors.
+All steps run in Power Query M, so cleaning is repeatable on every refresh. Order of execution: replace placeholders, convert types, remove error rows.
 
-This assessment helped identify data preparation requirements before developing the Power BI analytical model.
+**Replace text placeholders** such as "Not Available" with nulls before type conversion.
+```m
+= Table.ReplaceValue(
+    #"Previous Step",
+    "Not Available",
+    null,
+    Replacer.ReplaceValue,
+    {
+        "material_qty_used",
+        "material_cost",
+        "labor_cost"
+    }
+)
+```
 
+**Convert to numeric types** with a culture-invariant setting for aggregation and DAX.
+```m
+= Table.TransformColumnTypes(
+    #"Previous Step",
+    {
+        {"material_qty_used", type number},
+        {"material_cost", type number},
+        {"labor_cost", type number},
+        {"maintenance_cost", type number},
+        {"defect_rate", type number}
+    },
+    "en-US"
+)
+```
 
-
-
-## 4. Data Cleaning & Error Correction
-
-**Power Query | M Code**
-
-* **Numeric Data Type Conversion (Power Query / M Code / Transformation):** Converted cost and quantity columns to numeric types for aggregation and DAX calculations:
-
-  ```powerquery
-  = Table.TransformColumnTypes(
-      #"Previous Step",
-      {
-          {"material_qty_used", type number},
-          {"material_cost", type number},
-          {"labor_cost", type number},
-          {"maintenance_cost", type number},
-          {"defect_rate", type number}
-      },
-      "en-US"
-  )
-  ```
-
-* **Removal of Numeric Conversion Errors (Power Query / M Code / Row Purging):** Removed rows that returned errors after numeric type conversion in the specified fields:
-
-  ```powerquery
-  = Table.RemoveRowsWithErrors(
-      #"Changed Type",
-      {
-          "material_qty_used",
-          "material_cost",
-          "labor_cost",
-          "maintenance_cost",
-          "defect_rate"
-      }
-  )
-  ```
-
-* **Replacement of Text Placeholders (Power Query / M Code / Value Replacement):** Replaced text placeholders such as `"Not Available"` inside numeric columns with `null` database blanks before type conversion:
-
-  ```powerquery
-  = Table.ReplaceValue(
-      #"Previous Step",
-      "Not Available",
-      null,
-      Replacer.ReplaceValue,
-      {
-          "material_qty_used",
-          "material_cost",
-          "labor_cost"
-      }
-  )
-  ```
-
----
+**Remove rows that failed conversion.**
+```m
+= Table.RemoveRowsWithErrors(
+    #"Changed Type",
+    {
+        "material_qty_used",
+        "material_cost",
+        "labor_cost",
+        "maintenance_cost",
+        "defect_rate"
+    }
+)
+```
 
 ## 5. Feature Engineering
 
-**Power Query | M Code | Calculated Columns**
+**Production status:** classifies each record against its planned quantity.
+```m
+= Table.AddColumn(
+    #"Changed Type",
+    "Production_Status",
+    each
+        if [actual_qty] = null or [planned_qty] = null then null
+        else if [actual_qty] > [planned_qty] then "Surplus"
+        else if [actual_qty] < [planned_qty] then "Deficit"
+        else "Target Met",
+    type text
+)
+```
 
-* **Production Status Classification (Power Query / M Code / Conditional Logic):** Created a conditional column to classify production output volume variations against planned milestones:
+**Quarter name:** reporting quarter from the order date.
+```m
+= Table.AddColumn(
+    #"Previous Step",
+    "Quarter_Name",
+    each
+        if [order_date] = null then null
+        else "Qtr " & Text.From(Date.QuarterOfYear([order_date])),
+    type text
+)
+```
 
-  ```powerquery
-  = Table.AddColumn(
-      #"Changed Type",
-      "Production_Status",
-      each
-          if [actual_qty] = null or [planned_qty] = null then null
-          else if [actual_qty] > [planned_qty] then "Surplus"
-          else if [actual_qty] < [planned_qty] then "Deficit"
-          else "Target Met",
-      type text
-  )
-  ```
-
-* **Quarter Extraction (Power Query / M Code / Temporal Extraction):** Derived an explicit temporal reporting quarter row dimension directly from the order date:
-
-  ```powerquery
-  = Table.AddColumn(
-      #"Previous Step",
-      "Quarter_Name",
-      each
-          if [order_date] = null then null
-          else "Qtr " &
-              Text.From(Date.QuarterOfYear([order_date])),
-      type text
-  )
-  ```
-
-* **Labour Expense Classification (Power Query / M Code / Threshold Tiering):** Categorized floor labor operational expenditures using a fixed financial threshold of 50,000:
-
-  ```powerquery
-  = Table.AddColumn(
-      #"Previous Step",
-      "Expense_Tier",
-      each
-          if [labor_cost] = null then null
-          else if [labor_cost] > 50000
-              then "High Expense"
-              else "Standard Expense",
-      type text
-  )
-  ```
+**Expense tier:** labour cost threshold of 50,000.
+```m
+= Table.AddColumn(
+    #"Previous Step",
+    "Expense_Tier",
+    each
+        if [labor_cost] = null then null
+        else if [labor_cost] > 50000 then "High Expense"
+        else "Standard Expense",
+    type text
+)
+```
 
 ## 6. Data Modeling and Relational Schema
+Nine tables are related on customer, supplier, product, production order, machine and employee keys. Cardinality, key uniqueness and filter direction were checked so cross-table measures return the intended results.
 
-The Power BI data model brings together nine related tables to support analysis across different operational areas.
-
-The model includes:
-
-- Customer and sales order information.
-- Product and production information.
-- Production orders and production logs.
-- Machine and maintenance records.
-- Employee information associated with production activities.
-- Supplier information for sourcing performance analysis.
-
-Relationships use relevant identifiers, including customer, supplier, product, production order, machine, and employee identifiers, where the corresponding keys are available.
-
-A well-structured model helps Power BI apply filters consistently and reduces the need to repeat calculations across individual report visuals.
-
-Relationship direction, cardinality, key uniqueness, and filter propagation are important to the accuracy of cross-table analysis. Measures that combine fields from different tables should be validated to ensure that the model returns the intended results.
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/4921308a-ef32-4fcc-b793-4e61572ee0cd" />
+<img width="1920" height="1080" alt="Power BI model view of the nine manufacturing tables and their relationships" src="https://github.com/user-attachments/assets/4921308a-ef32-4fcc-b793-4e61572ee0cd" />
 
 ## 7. DAX Measures
 
-### 7.1 Production Efficiency and Output Performance
+### Production efficiency
+```dax
+Total Planned Quantity = SUM(Production_Logs[planned_qty])
 
-**Total Planned Quantity**
-```powerquery id="p1"
-Total Planned Quantity =
-SUM(Production_Logs[planned_qty])
-```
+Total Actual Quantity = SUM(Production_Logs[actual_qty])
 
-**Total Actual Quantity**
-```powerquery id="p2"
-Total Actual Quantity =
-SUM(Production_Logs[actual_qty])
-```
+Production Gap = [Total Actual Quantity] - [Total Planned Quantity]
 
-**Production Gap**
-```powerquery id="p3"
-Production Gap =
-[Total Actual Quantity] - [Total Planned Quantity]
-```
-
-**Production Achievement %**
-```powerquery id="p4"
 Production Achievement % =
-DIVIDE(
-    [Total Actual Quantity],
-    [Total Planned Quantity],
-    0
-)
+DIVIDE([Total Actual Quantity], [Total Planned Quantity], 0)
 ```
 
-### 7.2 Manufacturing Cost Optimization and Material Waste
+### Cost and material waste
+```dax
+Total Scrap Quantity = SUM(Production_Logs[scrap_qty])
 
-**Total Scrap Quantity**
-```powerquery id="p5"
-Total Scrap Quantity =
-SUM(Production_Logs[scrap_qty])
-```
-
-**Scrap Rate %**
-```powerquery id="p6"
 Scrap Rate % =
-DIVIDE(
-    [Total Scrap Quantity],
-    [Total Actual Quantity],
-    0
-)
+DIVIDE([Total Scrap Quantity], [Total Actual Quantity], 0)
+
+Total Material Cost = SUM(Production_Logs[material_cost])
+
+Total Labour Cost = SUM(Production_Logs[labor_cost])
 ```
 
-**Total Material Cost**
-```powerquery id="p7"
-Total Material Cost =
-SUM(Production_Logs[material_cost])
+### Machine reliability
+```dax
+Total Maintenance Cost = SUM(Maintenance_Logs[maintenance_cost])
+
+Total Downtime = SUM(Maintenance_Logs[downtime_hours])
 ```
 
-**Total Labour Cost**
-```powerquery id="p8"
-Total Labour Cost =
-SUM(Production_Logs[labor_cost])
-```
-
-### 7.3 Machine Reliability and Maintenance Performance
-
-**Total Maintenance Cost**
-```powerquery id="p9"
-Total Maintenance Cost =
-SUM(Maintenance_Logs[maintenance_cost])
-```
-
-**Total Downtime**
-```powerquery id="p10"
-Total Downtime =
-SUM(Maintenance_Logs[downtime_hours])
-```
-
-### 7.4 Customer Fulfilment and Order Value
-
-**Total Order Value**
-```powerquery id="p11"
+### Customer fulfilment
+```dax
 Total Order Value =
-SUMX(
-    Sales_Orders,
-    Sales_Orders[ordered_qty] *
-    Sales_Orders[unit_price]
-)
+SUMX(Sales_Orders, Sales_Orders[ordered_qty] * Sales_Orders[unit_price])
+
+Total Quantity Delivered = SUM(Sales_Orders[delivered_qty])
 ```
 
-**Total Quantity Delivered**
-```powerquery id="p12"
-Total Quantity Delivered =
-SUM(Sales_Orders[delivered_qty])
+### Supplier performance
+```dax
+Average Supplier Lead Time = AVERAGE(Suppliers[avg_lead_time_days])
+
+Average Supplier Defect Rate = AVERAGE(Suppliers[defect_rate])
 ```
 
-### 7.5 Supplier Performance and Sourcing Optimization
+Format `Production Achievement %` and `Scrap Rate %` as percentages. `DIVIDE` with a default of 0 prevents divide-by-zero errors. `Total Order Value` is ordered quantity at unit price, not revenue collected or profit.
 
-**Average Supplier Lead Time**
-```powerquery id="p13"
-Average Supplier Lead Time =
-AVERAGE(Suppliers[avg_lead_time_days])
-```
+## 8. Core Business Analysis
 
-**Average Supplier Defect Rate**
-```powerquery id="p14"
-Average Supplier Defect Rate =
-AVERAGE(Suppliers[defect_rate])
-```
+| # | Objective | Key question | Measures |
+|---|---|---|---|
+| 1 | Production efficiency | Is actual output meeting plan, by plant and shift? | Planned, Actual, Production Gap, Achievement % |
+| 2 | Cost and material waste | How do material cost, labour cost and scrap vary by shift? | Material Cost, Labour Cost, Scrap Quantity, Scrap Rate % |
+| 3 | Machine reliability | Which machines carry the most downtime and maintenance cost? | Total Downtime, Total Maintenance Cost |
+| 4 | Customer fulfilment | How do ordered and delivered quantities compare over time? | Total Order Value, Quantity Delivered, order status |
+| 5 | Supplier performance | Which suppliers have long lead times or high defect rates? | Average Lead Time, Average Defect Rate, grade |
 
-## 8. Exploratory Data Analysis
+Interpretation rules applied:
+- Judge cost changes alongside output so lower spend is not mistaken for efficiency.
+- High maintenance spend alone does not prove a poor machine. Age, usage and criticality matter.
+- Order value is not profit.
+- Confirm the supplier defect-rate definition before ranking suppliers.
 
-Exploratory data analysis was used to examine operational performance from multiple perspectives before drawing business conclusions.
+## 9. Data Visualization and Interpretation
 
-The analysis focuses on:
+**Page 1, Executive KPIs:** 10 cards covering Total Planned Quantity, Total Actual Quantity, Production Achievement %, Production Gap, Total Scrap Quantity, Scrap Rate %, Total Material Cost, Total Labour Cost, Total Maintenance Cost and Total Order Value.
 
-- Comparing planned production with actual output.
-- Identifying production gaps across available plants and shifts.
-- Examining scrap quantities and material and labour costs.
-- Comparing machine downtime with maintenance expenditure.
-- Tracking order quantities, delivered quantities, and order value over time.
-- Comparing supplier lead times and recorded defect rates.
+**Page 2, Business Operations Performance:**
 
-These comparisons help identify patterns, potential bottlenecks, and areas requiring further investigation. They also provide context for interpreting the KPIs displayed in the dashboards.
-
-## 9. Core Business Analysis
-
-The report addresses five business objectives. Each objective connects operational questions to relevant metrics and visual analysis.
-
-### 9.1 Production Efficiency and Output Performance
-
-**Business objective:** Evaluate whether production operations are meeting planned output expectations.
-
-Key questions:
-
-- How does actual production compare with planned production?
-- What is the production achievement percentage?
-- Which plants and shifts show the largest production gaps?
-- Where should production performance be investigated further?
-
-Relevant metrics:
-
-- Total Planned Quantity
-- Total Actual Quantity
-- Production Gap
-- Production Achievement %
-
-The analysis compares planned and actual quantities across available plant and shift categories. It supports investigation of production shortfalls and identification of operations that may require scheduling, resource, or process improvements.
-
-### 9.2 Manufacturing Cost Optimization and Material Waste
-
-**Business objective:** Understand manufacturing expenditure and assess the relationship between production activity and scrap.
-
-Key questions:
-
-- How much has been recorded as material cost?
-- How much has been recorded as labour cost?
-- How do material and labour costs vary across shifts?
-- What scrap quantities and scrap rates are recorded?
-
-Relevant metrics:
-
-- Total Material Cost
-- Total Labour Cost
-- Total Scrap Quantity
-- Scrap Rate %
-
-Comparing costs and scrap across shifts can help identify areas for investigation. Cost reductions should be evaluated alongside output and quality so that lower expenditure is not mistaken for improved efficiency when production has also declined.
-
-### 9.3 Machine Reliability and Maintenance Performance
-
-**Business objective:** Examine equipment downtime and maintenance expenditure to identify machines that may require attention.
-
-Key questions:
-
-- Which machines account for the most recorded downtime?
-- How does maintenance expenditure vary across machines?
-- Which machines may warrant further reliability investigation?
-- What do maintenance types and failure reasons indicate about recurring issues?
-
-Relevant metrics:
-
-- Total Downtime
-- Total Maintenance Cost
-
-The analysis compares downtime and maintenance cost by machine. These metrics provide a starting point for maintenance prioritisation, but higher maintenance spending alone does not prove poor performance. Equipment age, usage, production criticality, and failure history may also be relevant.
-
-### 9.4 Customer Fulfilment and Order Value
-
-**Business objective:** Compare customer order quantities with delivered quantities and monitor the value of orders over time.
-
-Key questions:
-
-- How do ordered quantities compare with delivered quantities?
-- How does order value change over time?
-- Which order statuses require follow-up?
-- Where are delivery dates or quantities indicative of fulfilment delays or shortfalls?
-
-Relevant metrics and fields:
-
-- Ordered Quantity
-- Total Quantity Delivered
-- Total Order Value
-- Order Status
-- Requested Delivery Date
-- Actual Delivery Date
-
-The analysis supports monitoring of order fulfilment and order value trends. Ordered quantity and delivered quantity should be compared using compatible filters and clearly defined aggregation logic.
-
-Order value is not the same as profit. A reliable profitability analysis would require relevant cost attribution, such as product costs and any additional expenses needed to calculate profit.
-
-### 9.5 Supplier Performance and Sourcing Optimization
-
-**Business objective:** Compare supplier lead times and recorded defect rates to support sourcing decisions.
-
-Key questions:
-
-- How does average supplier lead time vary by supplier?
-- How do recorded defect rates compare across suppliers?
-- Which suppliers may require a quality or delivery review?
-- How can supplier performance inform sourcing and follow-up priorities?
-
-Relevant metrics:
-
-- Average Supplier Lead Time
-- Average Supplier Defect Rate
-- Supplier Grade
-- Material Category
-
-The analysis compares supplier lead time with recorded defect rates and uses supplier grades and material categories as supporting context. Before ranking suppliers, the underlying defect-rate definition, scale, and aggregation method should be confirmed.
-
-## 10. Data Visualization and Interpretation
-
-The Power BI report contains two pages designed for executive review and operational investigation.
-
-### Page 1: Executive KPI's
-
-The executive page presents KPI cards for:
-
-- Total Planned Quantity
-- Total Actual Quantity
-- Production Achievement %
-- Production Gap
-- Total Scrap Quantity
-- Scrap Rate %
-- Total Material Cost
-- Total Labour Cost
-- Total Maintenance Cost
-- Total Order Value
-
-These indicators provide a high-level overview of production output, quality, expenditure, and order value.
-
-### Page 2: Business Operations Performance Analysis
-
-The business operations page brings together five primary visuals:
-
-| Business Objective | Primary Visual | Main Comparison |
+| Objective | Visual | Comparison |
 |---|---|---|
-| Production Efficiency | Line and clustered column chart | Planned and actual production by plant and shift. |
-| Manufacturing Cost and Material Waste | Stacked column chart | Material and labour costs by shift, with scrap rate available for context. |
-| Machine Reliability | Clustered bar chart | Downtime and maintenance cost by machine. |
-| Customer Fulfilment | Line and clustered column chart | Ordered quantity, delivered quantity, and order value over time. |
-| Supplier Performance | Line and clustered column chart | Average lead time and recorded defect rate by supplier. |
+| Production efficiency | Line and clustered column | Planned vs actual by plant and shift |
+| Cost and material waste | Stacked column | Material and labour cost by shift, with scrap rate |
+| Machine reliability | Clustered bar | Downtime and maintenance cost by machine |
+| Customer fulfilment | Line and clustered column | Ordered, delivered and order value over time |
+| Supplier performance | Line and clustered column | Lead time and defect rate by supplier |
 
-The visuals are intended to help users identify differences, trends, and areas for further investigation. Because measures can use different units and scales, axis formatting, percentage formatting, tooltips, and titles should be clear enough to prevent misleading comparisons.
+Axis scales, percentage formats, titles and tooltips are set explicitly because measures use different units.
+
+## 10. Validation and Quality Assurance
+- DAX totals reconciled with source-table totals
+- Percentage measures formatted correctly
+- Relationships and filters tested across all nine tables
+- Date fields group correctly in time visuals
+- Impact of removed error rows reviewed
+- Planned quantity source (`Production_Logs` vs `Production_Orders`) clearly identified
+- Order value never presented as profit
 
 ## 11. Key Findings and Insights
+The report is a validated analytical framework. No quantified improvement is claimed without verified results. It surfaces:
 
-The report is designed to surface evidence-based findings across the five business objectives.
-
-The analysis can help identify:
-
-- Gaps between planned and actual production.
-- Differences in production performance across plants and shifts.
-- Relationships between production activity, recorded costs, and scrap.
-- Machines with comparatively high downtime or maintenance expenditure.
-- Differences between ordered and delivered quantities.
-- Changes in order value over time.
-- Suppliers with comparatively long lead times or higher recorded defect rates.
-
-The significance of each finding depends on the validated results and the context of the operation. No numerical performance improvement or quantified business impact is claimed here without verified analytical results.
+| Area | What it reveals |
+|---|---|
+| Production | Planned vs actual gaps by plant and shift |
+| Cost and waste | Link between volume, cost and scrap |
+| Maintenance | Machines with high downtime or maintenance spend |
+| Fulfilment | Ordered vs delivered gaps and order value trend |
+| Suppliers | Longer lead times and higher defect rates |
 
 ## 12. Business Recommendations
-
-The findings from the report can support the following evidence-led actions:
-
-1. **Improve production planning:** Investigate recurring production gaps and compare planned output with actual results across plants and shifts.
-2. **Monitor manufacturing costs:** Review material and labour expenditure alongside production volume to distinguish genuine efficiency gains from reduced output.
-3. **Reduce scrap:** Investigate shifts, products, or production activities associated with higher scrap rates and verify potential causes before changing processes.
-4. **Strengthen maintenance planning:** Review machines with high downtime, maintenance history, and operational importance to help prioritise maintenance resources.
-5. **Improve customer fulfilment:** Monitor incomplete orders, delivery dates, and differences between ordered and delivered quantities.
-6. **Review supplier performance:** Use validated lead-time and defect-rate measures to identify suppliers for follow-up and sourcing review.
-7. **Maintain data quality:** Investigate recurring numeric conversion errors and document excluded records so that future reporting remains transparent and consistent.
-
-These recommendations should be prioritised according to the actual findings, operational constraints, and business impact demonstrated by the report.
+1. **Improve production planning:** investigate recurring gaps across plants and shifts.
+2. **Monitor manufacturing costs:** read spend alongside volume.
+3. **Reduce scrap:** verify causes in high-scrap shifts or products before changing processes.
+4. **Strengthen maintenance planning:** prioritize by downtime, history and criticality.
+5. **Improve customer fulfilment:** follow up on incomplete orders and delivery gaps.
+6. **Review supplier performance:** use validated lead-time and defect-rate measures for sourcing reviews.
+7. **Maintain data quality:** investigate recurring conversion errors and document excluded records.
 
 ## 13. Conclusion
+Power Query cleaning, a relational model and explicit DAX measures turned nine raw tables into a validated report that supports decisions on production, cost, maintenance, fulfilment and sourcing.
 
-Manufacturing Operations & Supply Chain Performance Analytics demonstrates how Power BI can organise multi-table operational data into a structured analytical model and turn it into business-focused performance reporting.
-
-By combining Power Query transformations, relational data modeling, DAX measures, and interactive visualizations, the project provides a framework for examining production efficiency, manufacturing costs, machine reliability, customer fulfilment, and supplier performance.
-
-The project reflects a practical approach to data analytics: prepare the data, model the relationships, define meaningful metrics, validate the calculations, and present the results in a format that supports business decisions.
-
-The resulting report is intended to help operational stakeholders identify areas for further investigation and make better-informed decisions using manufacturing and supply chain data.

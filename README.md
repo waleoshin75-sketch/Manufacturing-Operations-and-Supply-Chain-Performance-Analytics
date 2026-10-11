@@ -20,7 +20,7 @@ Nine dirty operational tables cleaned, modeled and turned into a two-page Power 
 5. [Feature Engineering](#5-feature-engineering)
 6. [Data Modeling and Relational Schema](#6-data-modeling-and-relational-schema)
 7. [DAX Measures](#7-dax-measures)
-8. [Business Objective](#8-business-objective)
+8. [Business Objectives](#8-business-objectives)
 9. [Data Visualization and Interpretation](#9-data-visualization-and-interpretation)
 10. [Validation and Quality Assurance](#10-validation-and-quality-assurance)
 11. [Key Findings and Insights](#11-key-findings-and-insights)
@@ -209,7 +209,7 @@ Average Supplier Defect Rate = AVERAGE(Suppliers[defect_rate])
 
 Format `Production Achievement %` and `Scrap Rate %` as percentages. `DIVIDE` with a default of 0 prevents divide-by-zero errors. `Total Order Value` is ordered quantity at unit price, not revenue collected or profit.
 
-## 8. Business Objective
+## 8. Business Objectives
 
 | # | Objective | Key question | Measures |
 |---|---|---|---|

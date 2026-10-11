@@ -1,7 +1,7 @@
 
 # Manufacturing Operations & Supply Chain Performance Analytics
 
-### A Power BI Project for Production Efficiency, Cost Optimization, Machine Reliability, Customer Fulfilment, and Supplier Performance
+### A Multi-Table Data Analytics Project for Production Efficiency, Cost Optimization, Machine Reliability, Customer Fulfilment, and Supplier Performance
 
 ## Table of Contents
 

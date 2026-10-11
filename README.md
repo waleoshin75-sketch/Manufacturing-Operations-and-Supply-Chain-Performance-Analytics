@@ -163,138 +163,145 @@ Relationship direction, cardinality, key uniqueness, and filter propagation are 
 
 ## 7. DAX Measures
 
-DAX measures provide reusable calculations for evaluating production, costs, maintenance, sales, and supplier performance.
+DAX measures provide reusable, dynamic calculations for evaluating production, costs, maintenance, sales, and supplier performance directly on the front-end dashboard panels.
 
-The following examples illustrate the principal calculations used in the project. They should match the final measures in the Power BI model.
+The following calculations represent the core analytical backbone of the Power BI data model. Every formula matches the explicit, fully unblocked measures active within the reporting workspace.
 
 ### Production Performance
 
 **Total Planned Quantity**
-
+*Aggregates master production targets from the operational planning dataset.*
 ```dax
-Total Planned Quantity =
-SUM(Production_Logs[planned_qty])
+Total Planned Quantity = 
+SUM(Production_Orders_tbl[planned_qty])
 ```
 
 **Total Actual Quantity**
-
+*Sums up the true volume throughput recorded directly on the factory floor logs.*
 ```dax
-Total Actual Quantity =
-SUM(Production_Logs[actual_qty])
+Total Actual Quantity = 
+SUM(Production_Logs_tbl[actual_qty])
 ```
 
 **Production Gap**
-
+*Calculates the exact volumetric variance surplus generated across manufacturing lines.*
 ```dax
-Production Gap =
+Production Gap = 
 [Total Actual Quantity] - [Total Planned Quantity]
 ```
 
 **Production Achievement %**
-
+*Evaluates the structural fulfillment rate. Utilizes the safe `DIVIDE` function to guard against runtime divide-by-zero errors.*
 ```dax
-Production Achievement % =
+Production Achievement % = 
 DIVIDE(
     [Total Actual Quantity],
     [Total Planned Quantity],
     0
 )
 ```
+*Formatting Note: `Production Achievement %` must be explicitly formatted as a Percentage (`%`) within the Power BI Measure Tools ribbon to render correctly.*
 
-Format `Production Achievement %` as a percentage in Power BI.
+---
 
 ### Quality and Material Waste
 
 **Total Scrap Quantity**
-
+*Tracks the absolute physical volume of material discarded during manufacturing runs.*
 ```dax
-Total Scrap Quantity =
-SUM(Production_Logs[scrap_qty])
+Total Scrap Quantity = 
+SUM(Production_Logs_tbl[scrap_qty])
 ```
 
 **Scrap Rate %**
-
+*Measures the proportion of wasted material relative to total gross actual output.*
 ```dax
-Scrap Rate % =
+Scrap Rate % = 
 DIVIDE(
     [Total Scrap Quantity],
     [Total Actual Quantity],
     0
 )
 ```
+*Formatting Note: Explicitly format `Scrap Rate %` as a Percentage (`%`) to display clean efficiency rates on the canvas.*
 
-Format `Scrap Rate %` as a percentage.
+---
 
 ### Manufacturing Costs
 
 **Total Material Cost**
-
+*Aggregates the gross financial capital deployed toward raw material inputs.*
 ```dax
-Total Material Cost =
-SUM(Production_Logs[material_cost])
+Total Material Cost = 
+SUM(Production_Logs_tbl[material_cost])
 ```
 
 **Total Labour Cost**
-
+*Calculates total floor personnel expenditures, utilizing clean numeric column alignment to bypass previous data type locks.*
 ```dax
-Total Labour Cost =
-SUM(Production_Logs[labor_cost])
+Total Labour Cost = 
+SUM(Production_Logs_tbl[labor_cost])
 ```
+
+---
 
 ### Machine Reliability and Maintenance
 
 **Total Maintenance Cost**
-
+*Sums gross corrective and preventative repair investments across all machinery assets.*
 ```dax
-Total Maintenance Cost =
-SUM(Maintenance_Logs[maintenance_cost])
+Total Maintenance Cost = 
+SUM(Maintenance_Logs_tbl[maintenance_cost])
 ```
 
 **Total Downtime**
-
+*Tracks the cumulative operational breakdown hours stalling floor throughput.*
 ```dax
-Total Downtime =
-SUM(Maintenance_Logs[downtime_hours])
+Total Downtime = 
+SUM(Maintenance_Logs_tbl[downtime_hours])
 ```
+
+---
 
 ### Customer Fulfilment and Order Value
 
 **Total Order Value**
-
+*Executes row-by-row iteration across the sales database to establish the total gross commercial demand footprint.*
 ```dax
-Total Order Value =
+Total Order Value = 
 SUMX(
-    Sales_Orders,
-    Sales_Orders[ordered_qty] * Sales_Orders[unit_price]
+    Sales_Orders_tbl,
+    Sales_Orders_tbl[ordered_qty] * Sales_Orders_tbl[unit_price]
 )
 ```
 
 **Total Quantity Delivered**
-
+*Aggregates the physical product volume successfully shipped out to distribution channels.*
 ```dax
-Total Quantity Delivered =
-SUM(Sales_Orders[delivered_qty])
+Total Quantity Delivered = 
+SUM(Sales_Orders_tbl[delivered_qty])
 ```
+*Interpretation Context: Total Order Value represents the financial baseline of ordered quantities at their recorded unit prices. It reflects structural commercial demand and should not be interpreted as liquid revenue collected or as net profit without incorporating separate logistical overhead ledgers.*
 
-Total Order Value represents the value of ordered quantities at the recorded unit prices. It should not be interpreted as revenue actually collected or as profit without additional supporting data.
+---
 
 ### Supplier Performance
 
 **Average Supplier Lead Time**
-
+*Computes the mean procurement time window (in days) spanning order placement to inbound dock delivery.*
 ```dax
-Average Supplier Lead Time =
-AVERAGE(Suppliers[avg_lead_time_days])
+Average Supplier Lead Time = 
+AVERAGE(Suppliers_tbl[avg_lead_time_days])
 ```
 
 **Average Supplier Defect Rate**
-
+*Evaluates inbound component quality by tracking mean structural material failures across third-party vendors.*
 ```dax
-Average Supplier Defect Rate =
-AVERAGE(Suppliers[defect_rate])
+Average Supplier Defect Rate = 
+AVERAGE(Suppliers_tbl[defect_rate])
 ```
+*Data Integrity Context: The supplier defect-rate calculation assumes that the underlying dataset column is entirely numeric. Following the removal of corrupted text strings in Power Query, this column maintains a pure decimal scale, allowing accurate mathematical averaging and clean percentage visualization.*
 
-The supplier defect-rate calculation assumes that the source field is numeric and consistently represented. Its aggregation and percentage formatting should reflect the field's actual definition and scale.
 
 ## 8. Exploratory Data Analysis
 

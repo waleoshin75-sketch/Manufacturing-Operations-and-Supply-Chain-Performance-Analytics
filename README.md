@@ -20,7 +20,7 @@ Nine dirty operational tables cleaned, modeled and turned into a two-page Power 
 5. [Feature Engineering](#5-feature-engineering)
 6. [Data Modeling and Relational Schema](#6-data-modeling-and-relational-schema)
 7. [DAX Measures](#7-dax-measures)
-8. [Business Objectives](#8-business-objectives)
+8. [Core Business Analysis](#8-core-business-analysis)
 9. [Data Visualization and Interpretation](#9-data-visualization-and-interpretation)
 10. [Validation and Quality Assurance](#10-validation-and-quality-assurance)
 11. [Key Findings and Insights](#11-key-findings-and-insights)
@@ -70,7 +70,7 @@ Decisions on output, cost, downtime, orders and suppliers need one trusted view.
 All steps run in Power Query M, so cleaning is repeatable on every refresh. Order of execution: replace placeholders, convert types, remove error rows.
 
 **Replace text placeholders** such as "Not Available" with nulls before type conversion.
-```m
+```powerquery
 = Table.ReplaceValue(
     #"Previous Step",
     "Not Available",
@@ -85,7 +85,7 @@ All steps run in Power Query M, so cleaning is repeatable on every refresh. Orde
 ```
 
 **Convert to numeric types** with a culture-invariant setting for aggregation and DAX.
-```m
+```powerquery
 = Table.TransformColumnTypes(
     #"Previous Step",
     {
@@ -100,7 +100,7 @@ All steps run in Power Query M, so cleaning is repeatable on every refresh. Orde
 ```
 
 **Remove rows that failed conversion.**
-```m
+```powerquery
 = Table.RemoveRowsWithErrors(
     #"Changed Type",
     {
@@ -116,7 +116,7 @@ All steps run in Power Query M, so cleaning is repeatable on every refresh. Orde
 ## 5. Feature Engineering
 
 **Production status:** classifies each record against its planned quantity.
-```m
+```powerquery
 = Table.AddColumn(
     #"Changed Type",
     "Production_Status",
@@ -130,7 +130,7 @@ All steps run in Power Query M, so cleaning is repeatable on every refresh. Orde
 ```
 
 **Quarter name:** reporting quarter from the order date.
-```m
+```powerquery
 = Table.AddColumn(
     #"Previous Step",
     "Quarter_Name",
@@ -142,7 +142,7 @@ All steps run in Power Query M, so cleaning is repeatable on every refresh. Orde
 ```
 
 **Expense tier:** labour cost threshold of 50,000.
-```m
+```powerquery
 = Table.AddColumn(
     #"Previous Step",
     "Expense_Tier",
@@ -162,7 +162,7 @@ Nine tables are related on customer, supplier, product, production order, machin
 ## 7. DAX Measures
 
 ### Production efficiency
-```dax
+```powerquery
 Total Planned Quantity = SUM(Production_Logs[planned_qty])
 
 Total Actual Quantity = SUM(Production_Logs[actual_qty])
@@ -174,7 +174,7 @@ DIVIDE([Total Actual Quantity], [Total Planned Quantity], 0)
 ```
 
 ### Cost and material waste
-```dax
+```powerquery
 Total Scrap Quantity = SUM(Production_Logs[scrap_qty])
 
 Scrap Rate % =
@@ -186,14 +186,14 @@ Total Labour Cost = SUM(Production_Logs[labor_cost])
 ```
 
 ### Machine reliability
-```dax
+```powerquery
 Total Maintenance Cost = SUM(Maintenance_Logs[maintenance_cost])
 
 Total Downtime = SUM(Maintenance_Logs[downtime_hours])
 ```
 
 ### Customer fulfilment
-```dax
+```powerquery
 Total Order Value =
 SUMX(Sales_Orders, Sales_Orders[ordered_qty] * Sales_Orders[unit_price])
 
@@ -201,7 +201,7 @@ Total Quantity Delivered = SUM(Sales_Orders[delivered_qty])
 ```
 
 ### Supplier performance
-```dax
+```powerquery
 Average Supplier Lead Time = AVERAGE(Suppliers[avg_lead_time_days])
 
 Average Supplier Defect Rate = AVERAGE(Suppliers[defect_rate])
@@ -209,7 +209,7 @@ Average Supplier Defect Rate = AVERAGE(Suppliers[defect_rate])
 
 Format `Production Achievement %` and `Scrap Rate %` as percentages. `DIVIDE` with a default of 0 prevents divide-by-zero errors. `Total Order Value` is ordered quantity at unit price, not revenue collected or profit.
 
-## 8. Business Objectives
+## 8. Core Business Analysis
 
 | # | Objective | Key question | Measures |
 |---|---|---|---|
@@ -236,8 +236,8 @@ Interpretation rules applied:
 | Production efficiency | Line and clustered column | Planned vs actual by plant and shift |
 | Cost and material waste | Stacked column | Material and labour cost by shift, with scrap rate |
 | Machine reliability | Clustered bar | Downtime and maintenance cost by machine |
-| Customer fulfilment | 100% Stacked column chart | Ordered, delivered and order value over time |
-| Supplier performance | 100% Stacked column chart | Lead time and defect rate by supplier |
+| Customer fulfilment | Line and clustered column | Ordered, delivered and order value over time |
+| Supplier performance | Line and clustered column | Lead time and defect rate by supplier |
 
 Axis scales, percentage formats, titles and tooltips are set explicitly because measures use different units.
 

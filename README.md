@@ -205,10 +205,8 @@ Relationship direction, cardinality, key uniqueness, and filter propagation are 
 
 ## 7. DAX Measures
 
-* **Total Planned Quantity (DAX):**
-```Total Planned Quantity =
-SUM(Production_Logs[planned_qty])
-```
+Total Planned Quantity = SUM(Production_Orders_tbl[planned_qty])
+
 
 * **Total Actual Quantity (DAX):**
   ```dax

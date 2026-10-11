@@ -113,15 +113,25 @@ All cleaning processes were automated inside the Power Query ETL engine using **
   ```
 
 ## 5. Feature Engineering
+New structural columns were engineered from existing columns prior to analysis to enrich the master datasets, map floor categories, and establish reporting time-series:
 
-New analytical columns were created from existing dataset fields in Excel Desktop to support manufacturing and supply chain analysis.
+* **Production Target Variance Columns (M Code / Conditional Logic):**
+  Engineered a row-by-row tracking column directly inside the dataset to explicitly isolate volume shortfalls before visual grouping:
+  ```powerquery
+  = Table.AddColumn(#"Changed Type", "Production_Status", each if [actual_qty] >= [planned_qty] then "Surplus" else "Deficit", type text)
+  ```
 
-| Table | New feature | Formula / logic | Purpose |
-|---|---|---|---|
-| Production logs | [Actual feature name] | `[Original Excel formula]` | [Business purpose] |
-| Production orders | [Actual feature name] | `[Original Excel formula]` | [Business purpose] |
-| Sales orders | [Actual feature name] | `[Original Excel formula]` | [Business purpose] |
-| Maintenance logs | [Actual feature name] | `[Original Excel formula]` | [Business purpose] |
+* **Advanced Temporal Extraction Columns (M Code / DateTime Logic):**
+  Extracted explicit time-series quarters from raw date records to map customer demand and shipping delivery timelines across the Qtr 1 landscape:
+  ```powerquery
+  = Table.AddColumn(#"Inserted Date", "Quarter_Name", each "Qtr " & Text.From(Date.QuarterOfYear([order_date])), type text)
+  ```
+
+* **Asset Class Categorization Columns (Excel/M Code Source Enrichment):**
+  Created an explicit structural threshold grouping within the logs to categorize financial and equipment asset burn states:
+  ```powerquery
+  = Table.AddColumn(#"Replaced Errors", "Expense_Tier", each if [labor_cost] > 50000 then "High Expense" else "Standard Expense", type text)
+  ```
 
 ## 6. Data Modeling
 

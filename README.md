@@ -133,15 +133,6 @@ New structural columns were engineered from existing columns prior to analysis t
   = Table.AddColumn(#"Replaced Errors", "Expense_Tier", each if [labor_cost] > 50000 then "High Expense" else "Standard Expense", type text)
   ```
 
-## 6. Data Modeling
-
-The nine related tables were connected in Power BI to support cross-table analysis.
-
-## 7. DAX Measures
-
-DAX measures were created in Power BI to calculate dynamic KPIs, including production achievement, production gap, scrap rate, manufacturing costs, maintenance costs, order value, and supplier performance.
-
-
 ## 6. Data Modeling and Relational Schema
 
 The Power BI data model brings together nine related tables to support analysis across different operational areas.

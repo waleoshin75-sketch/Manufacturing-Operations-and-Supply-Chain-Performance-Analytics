@@ -474,25 +474,7 @@ The business operations page brings together five primary visuals:
 
 The visuals are intended to help users identify differences, trends, and areas for further investigation. Because measures can use different units and scales, axis formatting, percentage formatting, tooltips, and titles should be clear enough to prevent misleading comparisons.
 
-## 11. Validation and Quality Assurance
-
-Validation is essential to ensure that the report communicates the data accurately.
-
-The project validation process should cover:
-
-- Checking that numeric measures aggregate the intended columns.
-- Confirming that percentage measures are formatted as percentages.
-- Comparing DAX totals against corresponding source-table totals.
-- Checking relationships and filter behaviour across the nine tables.
-- Confirming that date fields group correctly in time-based visuals.
-- Reviewing whether removed conversion-error rows materially affect reported results.
-- Ensuring that visual titles, axes, units, and tooltips accurately describe the metrics.
-- Confirming that order value is not presented as profit.
-- Checking that supplier defect rates are interpreted according to their source definition.
-
-Particular attention should be given to cross-table visuals. For example, production logs and production orders contain related but distinct planned-quantity fields; the selected field must be clearly identified when interpreting production achievement.
-
-## 12. Key Findings and Insights
+## 11. Key Findings and Insights
 
 The report is designed to surface evidence-based findings across the five business objectives.
 
@@ -508,7 +490,7 @@ The analysis can help identify:
 
 The significance of each finding depends on the validated results and the context of the operation. No numerical performance improvement or quantified business impact is claimed here without verified analytical results.
 
-## 13. Business Recommendations
+## 12. Business Recommendations
 
 The findings from the report can support the following evidence-led actions:
 
@@ -522,7 +504,7 @@ The findings from the report can support the following evidence-led actions:
 
 These recommendations should be prioritised according to the actual findings, operational constraints, and business impact demonstrated by the report.
 
-## 14. Conclusion
+## 13. Conclusion
 
 Manufacturing Operations & Supply Chain Performance Analytics demonstrates how Power BI can organise multi-table operational data into a structured analytical model and turn it into business-focused performance reporting.
 

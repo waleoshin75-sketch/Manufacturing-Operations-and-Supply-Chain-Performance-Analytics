@@ -286,6 +286,7 @@ AVERAGE(Suppliers[defect_rate])
 ```
 
 The supplier defect-rate calculation assumes that the source field is numeric and consistently represented. Its aggregation and percentage formatting should reflect the field's actual definition and scale.
+
 ## 8. Exploratory Data Analysis
 
 Exploratory data analysis was used to examine operational performance from multiple perspectives before drawing business conclusions.

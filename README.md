@@ -201,29 +201,30 @@ A well-structured model helps Power BI apply filters consistently and reduces th
 Relationship direction, cardinality, key uniqueness, and filter propagation are important to the accuracy of cross-table analysis. Measures that combine fields from different tables should be validated to ensure that the model returns the intended results.
 
 
+
 ## 7. DAX Measures
 
-DAX measures calculate dynamic manufacturing and supply chain KPIs in Power BI.
+**Power BI | DAX | KPI Development**
 
-* **Total Planned Quantity (DAX):** Aggregates planned production quantity from the production logs.
+* **Total Planned Quantity (DAX):** Aggregates planned production quantities from production logs.
   ```dax
   Total Planned Quantity =
   SUM(Production_Logs[planned_qty])
   ```
 
-* **Total Actual Quantity (DAX):** Calculates the total quantity actually produced.
+* **Total Actual Quantity (DAX):** Calculates total recorded production output.
   ```dax
   Total Actual Quantity =
   SUM(Production_Logs[actual_qty])
   ```
 
-* **Production Gap (DAX):** Measures the difference between actual and planned production.
+* **Production Gap (DAX):** Quantifies the difference between actual and planned output.
   ```dax
   Production Gap =
   [Total Actual Quantity] - [Total Planned Quantity]
   ```
 
-* **Production Achievement % (DAX):** Calculates actual output as a proportion of planned output.
+* **Production Achievement % (DAX):** Measures actual output as a proportion of planned output.
   ```dax
   Production Achievement % =
   DIVIDE(
@@ -233,13 +234,13 @@ DAX measures calculate dynamic manufacturing and supply chain KPIs in Power BI.
   )
   ```
 
-* **Total Scrap Quantity (DAX):** Aggregates recorded scrap quantity.
+* **Total Scrap Quantity (DAX):** Aggregates recorded production scrap.
   ```dax
   Total Scrap Quantity =
   SUM(Production_Logs[scrap_qty])
   ```
 
-* **Scrap Rate % (DAX):** Calculates scrap quantity relative to actual production.
+* **Scrap Rate % (DAX):** Measures scrap quantity relative to actual production output.
   ```dax
   Scrap Rate % =
   DIVIDE(
@@ -249,13 +250,13 @@ DAX measures calculate dynamic manufacturing and supply chain KPIs in Power BI.
   )
   ```
 
-* **Total Material Cost (DAX):** Aggregates recorded material expenditure.
+* **Total Material Cost (DAX):** Calculates total recorded material expenditure.
   ```dax
   Total Material Cost =
   SUM(Production_Logs[material_cost])
   ```
 
-* **Total Labour Cost (DAX):** Aggregates recorded labour expenditure.
+* **Total Labour Cost (DAX):** Calculates total recorded labour expenditure.
   ```dax
   Total Labour Cost =
   SUM(Production_Logs[labor_cost])
@@ -273,7 +274,7 @@ DAX measures calculate dynamic manufacturing and supply chain KPIs in Power BI.
   SUM(Maintenance_Logs[downtime_hours])
   ```
 
-* **Total Order Value (DAX):** Calculates order value from ordered quantity and unit price.
+* **Total Order Value (DAX):** Calculates order value using ordered quantities and unit prices.
   ```dax
   Total Order Value =
   SUMX(
@@ -283,13 +284,13 @@ DAX measures calculate dynamic manufacturing and supply chain KPIs in Power BI.
   )
   ```
 
-* **Total Quantity Delivered (DAX):** Aggregates recorded delivered quantities.
+* **Total Quantity Delivered (DAX):** Aggregates quantities recorded as delivered.
   ```dax
   Total Quantity Delivered =
   SUM(Sales_Orders[delivered_qty])
   ```
 
-* **Average Supplier Lead Time (DAX):** Calculates average supplier lead time in days.
+* **Average Supplier Lead Time (DAX):** Calculates the average recorded supplier lead time in days.
   ```dax
   Average Supplier Lead Time =
   AVERAGE(Suppliers[avg_lead_time_days])
@@ -300,6 +301,8 @@ DAX measures calculate dynamic manufacturing and supply chain KPIs in Power BI.
   Average Supplier Defect Rate =
   AVERAGE(Suppliers[defect_rate])
   ```
+
+**Formatting:** Format `Production Achievement %` and `Scrap Rate %` as percentages in Power BI. Confirm the source definition and scale of `defect_rate` before applying percentage formatting.
 
 ## 8. Exploratory Data Analysis
 

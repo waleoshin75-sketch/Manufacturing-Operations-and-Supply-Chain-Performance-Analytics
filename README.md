@@ -207,8 +207,8 @@ Relationship direction, cardinality, key uniqueness, and filter propagation are 
 
 * **Total Planned Quantity (DAX):**
   ```dax
-  Total Planned Quantity =
-  SUM(Production_Logs[planned_qty])
+Total Planned Quantity =
+SUM(Production_Logs[planned_qty])
   ```
 
 * **Total Actual Quantity (DAX):**

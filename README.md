@@ -86,39 +86,58 @@ The assessment focused on:
 
 This assessment helped identify data preparation requirements before developing the Power BI analytical model.
 
+
 ## 4. Data Cleaning and Error Correction
 
-Data preparation was carried out to improve the reliability of the dataset within the Power BI workflow.
+Data cleaning was primarily completed in Excel Desktop before the prepared dataset was modelled in Power BI.
 
-### Power Query Transformations
+| Cleaning task | Procedure / formula | Purpose |
+|---|---|---|
+| Negative scrap quantity | `=ABS(J2)` | Converts negative scrap values to positive values; fill down in the helper column. |
+| Negative order quantity | `=ABS(E2)` | Converts negative order quantities to positive values; fill down in the helper column. |
+| Missing delivery dates | Select blank cells and enter `Not Available`, then press `Ctrl + Enter`. | Makes missing delivery dates explicit. |
+| Date standardization | **Home → Number Format → Short Date** | Standardizes `requested_deleivery_date` and `actual_delivery_date` display. |
+| Text cleanup | Trim leading/trailing spaces; correct casing and misspellings. | Improves consistency in text fields. |
+| Category standardization | Standardize machine status, quality result, sales status, and maintenance type. | Prevents inconsistent category grouping. |
+| Missing-value handling | Use `Not Provided`, `Unknown`, or `Not Available`, as appropriate to the field. | Distinguishes missing information from known values. |
+| Currency consistency | Standardize currency representation to Nigerian naira (₦). | Supports consistent cost and price interpretation. |
+| Duplicate handling | Remove confirmed duplicate `Production_Orders` records; preserve legitimate repeated IDs and categories. | Removes actual duplicates without deleting valid records. |
+| Numeric conversion | In Power BI Power Query, correct data types and remove rows that return conversion errors. | Enables numeric aggregation and DAX calculations. |
 
-The following transformations were applied:
+**Formula workflow:** Create a helper column beside the original field, enter the formula in the first data row, fill down, check the results, and preserve the original raw column.
 
-- Corrected column data types to align with their intended analytical use.
-- Converted relevant columns to numeric data types where numerical calculations were required.
-- Identified conversion errors arising when columns contained non-numeric text, including entries such as `Not Available`.
-- Removed rows that returned errors during numeric type conversion to prevent those errors from interfering with downstream calculations.
-- Prepared the resulting data for modeling, aggregation, and DAX calculations.
+Example:
 
-Removing rows that produce conversion errors can affect the completeness of the analysis. Therefore, the impact of these exclusions should be considered when interpreting the results, particularly for cost, material usage, and production measures.
+```excel
+=ABS(J2)
+```
 
-The preparation process enabled relevant measures, including labour cost and material cost calculations, to operate on usable numeric data.
+```excel
+=ABS(E2)
+```
+
+The column references above reflect the examples used during the cleaning workflow; verify them against the final worksheet layout before reuse.
+
 
 ## 5. Feature Engineering
 
-Feature engineering supports the conversion of operational fields into measures and analytical indicators that are meaningful to the business.
+New analytical columns were created from existing dataset fields in Excel Desktop to support manufacturing and supply chain analysis.
 
-The project uses the available dataset fields and DAX calculations to assess:
+| Table | New feature | Formula / logic | Purpose |
+|---|---|---|---|
+| Production logs | [Actual feature name] | `[Original Excel formula]` | [Business purpose] |
+| Production orders | [Actual feature name] | `[Original Excel formula]` | [Business purpose] |
+| Sales orders | [Actual feature name] | `[Original Excel formula]` | [Business purpose] |
+| Maintenance logs | [Actual feature name] | `[Original Excel formula]` | [Business purpose] |
 
-- Production achievement against planned output.
-- Production gaps between actual and planned quantities.
-- Scrap relative to actual production.
-- Material and labour expenditure.
-- Machine downtime and maintenance expenditure.
-- Sales order value based on ordered quantities and unit prices.
-- Supplier lead time and defect rate.
+## 6. Data Modeling
 
-These indicators help translate individual records into business performance metrics. Calculated measures are used for aggregation and reporting, while existing fields such as order dates, shifts, production quantities, delivery quantities, and supplier attributes support grouping and comparison.
+The nine related tables were connected in Power BI to support cross-table analysis.
+
+## 7. DAX Measures
+
+DAX measures were created in Power BI to calculate dynamic KPIs, including production achievement, production gap, scrap rate, manufacturing costs, maintenance costs, order value, and supplier performance.
+
 
 ## 6. Data Modeling and Relational Schema
 

@@ -202,29 +202,28 @@ Relationship direction, cardinality, key uniqueness, and filter propagation are 
 
 
 
+
 ## 7. DAX Measures
 
-**Power BI | DAX | KPI Development**
-
-* **Total Planned Quantity (DAX):** Aggregates planned production quantities from production logs.
+* **Total Planned Quantity (DAX):**
   ```dax
   Total Planned Quantity =
   SUM(Production_Logs[planned_qty])
   ```
 
-* **Total Actual Quantity (DAX):** Calculates total recorded production output.
+* **Total Actual Quantity (DAX):**
   ```dax
   Total Actual Quantity =
   SUM(Production_Logs[actual_qty])
   ```
 
-* **Production Gap (DAX):** Quantifies the difference between actual and planned output.
+* **Production Gap (DAX):**
   ```dax
   Production Gap =
   [Total Actual Quantity] - [Total Planned Quantity]
   ```
 
-* **Production Achievement % (DAX):** Measures actual output as a proportion of planned output.
+* **Production Achievement % (DAX):**
   ```dax
   Production Achievement % =
   DIVIDE(
@@ -234,13 +233,13 @@ Relationship direction, cardinality, key uniqueness, and filter propagation are 
   )
   ```
 
-* **Total Scrap Quantity (DAX):** Aggregates recorded production scrap.
+* **Total Scrap Quantity (DAX):**
   ```dax
   Total Scrap Quantity =
   SUM(Production_Logs[scrap_qty])
   ```
 
-* **Scrap Rate % (DAX):** Measures scrap quantity relative to actual production output.
+* **Scrap Rate % (DAX):**
   ```dax
   Scrap Rate % =
   DIVIDE(
@@ -250,31 +249,31 @@ Relationship direction, cardinality, key uniqueness, and filter propagation are 
   )
   ```
 
-* **Total Material Cost (DAX):** Calculates total recorded material expenditure.
+* **Total Material Cost (DAX):**
   ```dax
   Total Material Cost =
   SUM(Production_Logs[material_cost])
   ```
 
-* **Total Labour Cost (DAX):** Calculates total recorded labour expenditure.
+* **Total Labour Cost (DAX):**
   ```dax
   Total Labour Cost =
   SUM(Production_Logs[labor_cost])
   ```
 
-* **Total Maintenance Cost (DAX):** Aggregates recorded maintenance expenditure.
+* **Total Maintenance Cost (DAX):**
   ```dax
   Total Maintenance Cost =
   SUM(Maintenance_Logs[maintenance_cost])
   ```
 
-* **Total Downtime (DAX):** Calculates accumulated machine downtime in hours.
+* **Total Downtime (DAX):**
   ```dax
   Total Downtime =
   SUM(Maintenance_Logs[downtime_hours])
   ```
 
-* **Total Order Value (DAX):** Calculates order value using ordered quantities and unit prices.
+* **Total Order Value (DAX):**
   ```dax
   Total Order Value =
   SUMX(
@@ -284,25 +283,23 @@ Relationship direction, cardinality, key uniqueness, and filter propagation are 
   )
   ```
 
-* **Total Quantity Delivered (DAX):** Aggregates quantities recorded as delivered.
+* **Total Quantity Delivered (DAX):**
   ```dax
   Total Quantity Delivered =
   SUM(Sales_Orders[delivered_qty])
   ```
 
-* **Average Supplier Lead Time (DAX):** Calculates the average recorded supplier lead time in days.
+* **Average Supplier Lead Time (DAX):**
   ```dax
   Average Supplier Lead Time =
   AVERAGE(Suppliers[avg_lead_time_days])
   ```
 
-* **Average Supplier Defect Rate (DAX):** Calculates the average recorded supplier defect rate.
+* **Average Supplier Defect Rate (DAX):**
   ```dax
   Average Supplier Defect Rate =
   AVERAGE(Suppliers[defect_rate])
   ```
-
-**Formatting:** Format `Production Achievement %` and `Scrap Rate %` as percentages in Power BI. Confirm the source definition and scale of `defect_rate` before applying percentage formatting.
 
 ## 8. Exploratory Data Analysis
 

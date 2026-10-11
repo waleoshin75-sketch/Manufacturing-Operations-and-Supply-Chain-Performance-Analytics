@@ -88,11 +88,13 @@ This assessment helped identify data preparation requirements before developing 
 
 
 
+
 ## 4. Data Cleaning & Error Correction
 
 **Power Query | M Code**
 
 * **Numeric Data Type Conversion:** Converted cost and quantity columns to numeric types for aggregation and DAX calculations.
+
   ```powerquery
   = Table.TransformColumnTypes(
       #"Previous Step",
@@ -108,6 +110,7 @@ This assessment helped identify data preparation requirements before developing 
   ```
 
 * **Removal of Numeric Conversion Errors:** Removed rows that returned errors after numeric type conversion in the specified fields.
+
   ```powerquery
   = Table.RemoveRowsWithErrors(
       #"Changed Type",
@@ -122,6 +125,7 @@ This assessment helped identify data preparation requirements before developing 
   ```
 
 * **Replacement of Text Placeholders:** Where text placeholders such as `"Not Available"` occur in numeric columns, replace them with `null` before conversion.
+
   ```powerquery
   = Table.ReplaceValue(
       #"Previous Step",
@@ -141,6 +145,7 @@ This assessment helped identify data preparation requirements before developing 
 **Power Query | M Code | Calculated Columns**
 
 * **Production Status Classification:** Created a column to classify production output against planned quantity.
+
   ```powerquery
   = Table.AddColumn(
       #"Changed Type",
@@ -155,6 +160,7 @@ This assessment helped identify data preparation requirements before developing 
   ```
 
 * **Quarter Extraction:** Derived a reporting quarter from the order date.
+
   ```powerquery
   = Table.AddColumn(
       #"Previous Step",
@@ -168,6 +174,7 @@ This assessment helped identify data preparation requirements before developing 
   ```
 
 * **Labour Expense Classification:** Categorized labour cost using a threshold of 50,000.
+
   ```powerquery
   = Table.AddColumn(
       #"Previous Step",
@@ -180,7 +187,7 @@ This assessment helped identify data preparation requirements before developing 
       type text
   )
   ```
-
+  
 ## 6. Data Modeling and Relational Schema
 
 The Power BI data model brings together nine related tables to support analysis across different operational areas.

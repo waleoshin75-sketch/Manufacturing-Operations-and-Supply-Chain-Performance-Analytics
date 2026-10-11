@@ -201,116 +201,71 @@ A well-structured model helps Power BI apply filters consistently and reduces th
 Relationship direction, cardinality, key uniqueness, and filter propagation are important to the accuracy of cross-table analysis. Measures that combine fields from different tables should be validated to ensure that the model returns the intended results.
 
 
-
-
-
 ## 7. DAX Measures
 
 ### 7.1 Production Efficiency and Output Performance
 
-**Total Planned Quantity**
-```dax
 Total Planned Quantity =
 SUM(Production_Logs[planned_qty])
-```
 
-**Total Actual Quantity**
-```dax
 Total Actual Quantity =
 SUM(Production_Logs[actual_qty])
-```
 
-**Production Gap**
-```dax
 Production Gap =
 [Total Actual Quantity] - [Total Planned Quantity]
-```
 
-**Production Achievement %**
-```dax
 Production Achievement % =
 DIVIDE(
     [Total Actual Quantity],
     [Total Planned Quantity],
     0
 )
-```
 
 ### 7.2 Manufacturing Cost Optimization and Material Waste
 
-**Total Scrap Quantity**
-```dax
 Total Scrap Quantity =
 SUM(Production_Logs[scrap_qty])
-```
 
-**Scrap Rate %**
-```dax
 Scrap Rate % =
 DIVIDE(
     [Total Scrap Quantity],
     [Total Actual Quantity],
     0
 )
-```
 
-**Total Material Cost**
-```dax
 Total Material Cost =
 SUM(Production_Logs[material_cost])
-```
 
-**Total Labour Cost**
-```dax
 Total Labour Cost =
 SUM(Production_Logs[labor_cost])
-```
 
 ### 7.3 Machine Reliability and Maintenance Performance
 
-**Total Maintenance Cost**
-```dax
 Total Maintenance Cost =
 SUM(Maintenance_Logs[maintenance_cost])
-```
 
-**Total Downtime**
-```dax
 Total Downtime =
 SUM(Maintenance_Logs[downtime_hours])
-```
 
 ### 7.4 Customer Fulfilment and Order Value
 
-**Total Order Value**
-```dax
 Total Order Value =
 SUMX(
     Sales_Orders,
     Sales_Orders[ordered_qty] *
     Sales_Orders[unit_price]
 )
-```
 
-**Total Quantity Delivered**
-```dax
 Total Quantity Delivered =
 SUM(Sales_Orders[delivered_qty])
-```
 
 ### 7.5 Supplier Performance and Sourcing Optimization
 
-**Average Supplier Lead Time**
-```dax
 Average Supplier Lead Time =
 AVERAGE(Suppliers[avg_lead_time_days])
-```
 
-**Average Supplier Defect Rate**
-```dax
 Average Supplier Defect Rate =
 AVERAGE(Suppliers[defect_rate])
-```
 
 ## 8. Exploratory Data Analysis
 

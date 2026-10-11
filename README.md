@@ -203,100 +203,114 @@ Relationship direction, cardinality, key uniqueness, and filter propagation are 
 
 
 
+
 ## 7. DAX Measures
 
-Total Planned Quantity = SUM(Production_Orders_tbl[planned_qty])
+### 7.1 Production Efficiency and Output Performance
 
+**Total Planned Quantity**
+```dax
+Total Planned Quantity =
+SUM(Production_Logs[planned_qty])
+```
 
-* **Total Actual Quantity (DAX):**
-  ```dax
-   Total Planned Quantity =
-   SUM(Production_Logs[planned_qty])
-  ```
+**Total Actual Quantity**
+```dax
+Total Actual Quantity =
+SUM(Production_Logs[actual_qty])
+```
 
-* **Production Gap (DAX):**
-  ```dax
-  Production Gap =
-  [Total Actual Quantity] - [Total Planned Quantity]
-  ```
+**Production Gap**
+```dax
+Production Gap =
+[Total Actual Quantity] - [Total Planned Quantity]
+```
 
-* **Production Achievement % (DAX):**
-  ```dax
-  Production Achievement % =
-  DIVIDE(
-      [Total Actual Quantity],
-      [Total Planned Quantity],
-      0
-  )
-  ```
+**Production Achievement %**
+```dax
+Production Achievement % =
+DIVIDE(
+    [Total Actual Quantity],
+    [Total Planned Quantity],
+    0
+)
+```
 
-* **Total Scrap Quantity (DAX):**
-  ```dax
-  Total Scrap Quantity =
-  SUM(Production_Logs[scrap_qty])
-  ```
+### 7.2 Manufacturing Cost Optimization and Material Waste
 
-* **Scrap Rate % (DAX):**
-  ```dax
-  Scrap Rate % =
-  DIVIDE(
-      [Total Scrap Quantity],
-      [Total Actual Quantity],
-      0
-  )
-  ```
+**Total Scrap Quantity**
+```dax
+Total Scrap Quantity =
+SUM(Production_Logs[scrap_qty])
+```
 
-* **Total Material Cost (DAX):**
-  ```dax
-  Total Material Cost =
-  SUM(Production_Logs[material_cost])
-  ```
+**Scrap Rate %**
+```dax
+Scrap Rate % =
+DIVIDE(
+    [Total Scrap Quantity],
+    [Total Actual Quantity],
+    0
+)
+```
 
-* **Total Labour Cost (DAX):**
-  ```dax
-  Total Labour Cost =
-  SUM(Production_Logs[labor_cost])
-  ```
+**Total Material Cost**
+```dax
+Total Material Cost =
+SUM(Production_Logs[material_cost])
+```
 
-* **Total Maintenance Cost (DAX):**
-  ```dax
-  Total Maintenance Cost =
-  SUM(Maintenance_Logs[maintenance_cost])
-  ```
+**Total Labour Cost**
+```dax
+Total Labour Cost =
+SUM(Production_Logs[labor_cost])
+```
 
-* **Total Downtime (DAX):**
-  ```dax
-  Total Downtime =
-  SUM(Maintenance_Logs[downtime_hours])
-  ```
+### 7.3 Machine Reliability and Maintenance Performance
 
-* **Total Order Value (DAX):**
-  ```dax
-  Total Order Value =
-  SUMX(
-      Sales_Orders,
-      Sales_Orders[ordered_qty] *
-      Sales_Orders[unit_price]
-  )
-  ```
+**Total Maintenance Cost**
+```dax
+Total Maintenance Cost =
+SUM(Maintenance_Logs[maintenance_cost])
+```
 
-* **Total Quantity Delivered (DAX):**
-  ```dax
-  Total Quantity Delivered =
-  SUM(Sales_Orders[delivered_qty])
-  ```
+**Total Downtime**
+```dax
+Total Downtime =
+SUM(Maintenance_Logs[downtime_hours])
+```
 
-* **Average Supplier Lead Time (DAX):**
-  ```dax
-  Average Supplier Lead Time =
-  AVERAGE(Suppliers[avg_lead_time_days])
-  ```
+### 7.4 Customer Fulfilment and Order Value
 
-* **Average Supplier Defect Rate (DAX):**
-  ```dax
-  Average Supplier Defect Rate =
-  AVERAGE(Suppliers[defect_rate])
-  ```
+**Total Order Value**
+```dax
+Total Order Value =
+SUMX(
+    Sales_Orders,
+    Sales_Orders[ordered_qty] *
+    Sales_Orders[unit_price]
+)
+```
+
+**Total Quantity Delivered**
+```dax
+Total Quantity Delivered =
+SUM(Sales_Orders[delivered_qty])
+```
+
+### 7.5 Supplier Performance and Sourcing Optimization
+
+**Average Supplier Lead Time**
+```dax
+Average Supplier Lead Time =
+AVERAGE(Suppliers[avg_lead_time_days])
+```
+
+**Average Supplier Defect Rate**
+```dax
+Average Supplier Defect Rate =
+AVERAGE(Suppliers[defect_rate])
+```
 
 ## 8. Exploratory Data Analysis
 

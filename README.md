@@ -208,8 +208,7 @@ Relationships use relevant identifiers, including customer, supplier, product, p
 A well-structured model helps Power BI apply filters consistently and reduces the need to repeat calculations across individual report visuals.
 
 Relationship direction, cardinality, key uniqueness, and filter propagation are important to the accuracy of cross-table analysis. Measures that combine fields from different tables should be validated to ensure that the model returns the intended results.
-
-
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/4921308a-ef32-4fcc-b793-4e61572ee0cd" />
 
 ## 7. DAX Measures
 

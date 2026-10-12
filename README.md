@@ -218,6 +218,9 @@ Format `Production Achievement %` and `Scrap Rate %` as percentages. `DIVIDE` wi
 | 3 | Machine reliability | Which machines carry the most downtime and maintenance cost? | Total Downtime, Total Maintenance Cost |
 | 4 | Customer fulfilment | How do ordered and delivered quantities compare over time? | Total Order Value, Quantity Delivered, order status |
 | 5 | Supplier performance | Which suppliers have long lead times or high defect rates? | Average Lead Time, Average Defect Rate, grade |
+<img width="2400" height="1350" alt="dashboard-executive-kpis" src="https://github.com/user-attachments/assets/e2d51a75-76e3-4562-aa9d-1969e0d52115" />
+
+<img width="2400" height="1357" alt="dashboard-business-operations" src="https://github.com/user-attachments/assets/f79ffc6b-f720-43e3-998f-6de9a7be2fdf" />
 
 Interpretation rules applied:
 - Judge cost changes alongside output so lower spend is not mistaken for efficiency.

@@ -157,7 +157,7 @@ All steps run in Power Query M, so cleaning is repeatable on every refresh. Orde
 ## 6. Data Modeling and Relational Schema
 Nine tables are related on customer, supplier, product, production order, machine and employee keys. Cardinality, key uniqueness and filter direction were checked so cross-table measures return the intended results.
 
-<img width="959" height="410" alt="image" src="https://github.com/user-attachments/assets/f898b026-d264-4bee-a140-00857cbaa2a5" />
+<img width="1920" height="1080" alt="Power BI model view of the nine manufacturing tables and their relationships" src="https://github.com/user-attachments/assets/4921308a-ef32-4fcc-b793-4e61572ee0cd" />
 
 ## 7. DAX Measures
 
@@ -261,7 +261,16 @@ Axis scales, percentage formats, titles and tooltips are set explicitly because 
 - Order value never presented as profit
 
 ## 11. Key Findings and Insights
-The report is a validated analytical framework. No quantified improvement is claimed without verified results. It surfaces:
+Production results from the report:
+
+| Metric | Result |
+|---|---|
+| Total Planned Quantity | 10.31M |
+| Total Actual Quantity | 9.79M |
+| Production Gap | -519K (shortfall) |
+| Production Achievement % | 94.97% |
+
+Actual output reached about 95 percent of plan, a shortfall of roughly 519 thousand units. No improvement or business impact is claimed beyond these verified figures. The report also surfaces:
 
 | Area | What it reveals |
 |---|---|

@@ -229,9 +229,7 @@ Interpretation rules applied:
 
 **Page 1, Executive KPIs:** 10 cards covering Total Planned Quantity, Total Actual Quantity, Production Achievement %, Production Gap, Total Scrap Quantity, Scrap Rate %, Total Material Cost, Total Labour Cost, Total Maintenance Cost and Total Order Value.
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/e2d51a75-76e3-4562-aa9d-1969e0d52115" alt="Executive KPI dashboard with ten cards covering planned and actual quantity, production achievement, scrap, material, labour and maintenance cost, and total order value" width="100%">
-</p>
+<img width="2400" height="1348" alt="dashboard-executive-kpis (1)" src="https://github.com/user-attachments/assets/c22efe2c-8427-46e5-bcf0-299bec28f703" />
 <p align="center"><em>Executive KPI Dashboard</em></p>
 
 **Page 2, Business Operations Performance:**
@@ -244,9 +242,7 @@ Interpretation rules applied:
 | Customer fulfilment | Line and clustered column | Ordered, delivered and order value over time |
 | Supplier performance | Line and clustered column | Lead time and defect rate by supplier |
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/f79ffc6b-f720-43e3-998f-6de9a7be2fdf" alt="Business operations dashboard comparing production by plant and shift, cost and scrap by shift, supplier defect rate and lead time, machine downtime and maintenance cost, and ordered vs delivered quantity" width="100%">
-</p>
+<img width="2400" height="1356" alt="dashboard-business-operations (1)" src="https://github.com/user-attachments/assets/79b3bdc2-cc6e-4e70-a00e-2c645e8b4187" />
 <p align="center"><em>Business Operations Performance Analysis</em></p>
 
 Axis scales, percentage formats, titles and tooltips are set explicitly because measures use different units.

@@ -20,7 +20,7 @@ Nine dirty operational tables cleaned, modeled and turned into a two-page Power 
 5. [Feature Engineering](#5-feature-engineering)
 6. [Data Modeling and Relational Schema](#6-data-modeling-and-relational-schema)
 7. [DAX Measures](#7-dax-measures)
-8. [Business Objectives](#8-business-objectives)
+8. [Core Business Analysis](#8-core-business-analysis)
 9. [Data Visualization and Interpretation](#9-data-visualization-and-interpretation)
 10. [Validation and Quality Assurance](#10-validation-and-quality-assurance)
 11. [Key Findings and Insights](#11-key-findings-and-insights)
@@ -209,7 +209,7 @@ Average Supplier Defect Rate = AVERAGE(Suppliers[defect_rate])
 
 Format `Production Achievement %` and `Scrap Rate %` as percentages. `DIVIDE` with a default of 0 prevents divide-by-zero errors. `Total Order Value` is ordered quantity at unit price, not revenue collected or profit.
 
-## 8. Business Objectives
+## 8. Core Business Analysis
 
 | # | Objective | Key question | Measures |
 |---|---|---|---|
@@ -218,9 +218,6 @@ Format `Production Achievement %` and `Scrap Rate %` as percentages. `DIVIDE` wi
 | 3 | Machine reliability | Which machines carry the most downtime and maintenance cost? | Total Downtime, Total Maintenance Cost |
 | 4 | Customer fulfilment | How do ordered and delivered quantities compare over time? | Total Order Value, Quantity Delivered, order status |
 | 5 | Supplier performance | Which suppliers have long lead times or high defect rates? | Average Lead Time, Average Defect Rate, grade |
-<img width="2400" height="1350" alt="dashboard-executive-kpis" src="https://github.com/user-attachments/assets/e2d51a75-76e3-4562-aa9d-1969e0d52115" />
-
-<img width="2400" height="1357" alt="dashboard-business-operations" src="https://github.com/user-attachments/assets/f79ffc6b-f720-43e3-998f-6de9a7be2fdf" />
 
 Interpretation rules applied:
 - Judge cost changes alongside output so lower spend is not mistaken for efficiency.
@@ -232,6 +229,11 @@ Interpretation rules applied:
 
 **Page 1, Executive KPIs:** 10 cards covering Total Planned Quantity, Total Actual Quantity, Production Achievement %, Production Gap, Total Scrap Quantity, Scrap Rate %, Total Material Cost, Total Labour Cost, Total Maintenance Cost and Total Order Value.
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e2d51a75-76e3-4562-aa9d-1969e0d52115" alt="Executive KPI dashboard with ten cards covering planned and actual quantity, production achievement, scrap, material, labour and maintenance cost, and total order value" width="100%">
+</p>
+<p align="center"><em>Executive KPI Dashboard</em></p>
+
 **Page 2, Business Operations Performance:**
 
 | Objective | Visual | Comparison |
@@ -241,6 +243,11 @@ Interpretation rules applied:
 | Machine reliability | Clustered bar | Downtime and maintenance cost by machine |
 | Customer fulfilment | Line and clustered column | Ordered, delivered and order value over time |
 | Supplier performance | Line and clustered column | Lead time and defect rate by supplier |
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f79ffc6b-f720-43e3-998f-6de9a7be2fdf" alt="Business operations dashboard comparing production by plant and shift, cost and scrap by shift, supplier defect rate and lead time, machine downtime and maintenance cost, and ordered vs delivered quantity" width="100%">
+</p>
+<p align="center"><em>Business Operations Performance Analysis</em></p>
 
 Axis scales, percentage formats, titles and tooltips are set explicitly because measures use different units.
 

@@ -1,4 +1,4 @@
-# Manufacturing Operations and Supply Chain Performance Analytics
+# Manufacturing Operations and Supply Chain Performance Analytics Using Power BI
 
 **Power BI | Power Query M | DAX | Production, cost, maintenance, fulfilment and supplier analytics**
 
